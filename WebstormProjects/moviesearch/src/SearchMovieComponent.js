@@ -1,11 +1,17 @@
 import React, {useState} from "react";
-
-export default function searchMovie(){
+import MovieCard from "./movie-card";
+export default function searchMovie() {
     //static -input query, movies <-- need to tract
     //useState to manage data
 
     //sending default valsue in usestate funcation
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [query, setQuery] = useState('');
+
+    //creat the state for movies and update that stat appropriate
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [movies, setMovies] = useState([]);
+
     const searchMovie = async (e) => {
         e.preventDefault();
         console.log("submitting");
@@ -17,21 +23,30 @@ export default function searchMovie(){
             try {
                 const res = await fetch(url);
                 const data = await res.json();
-                console.log(data);
-            }catch (err){
+                setMovies(data.results);
+            } catch (err) {
                 console.error(err);
             }
-    }
-    return(
-        <form className="form" onSubmit={searchMovie}>
-            <label className="label" htmlFor="query">
-                Movie Name
-            </label>
+        }
+        return (
+            <>
+            <form className="form" onSubmit={searchMovie}>
+                <label className="label" htmlFor="query">
+                    Movie Name
+                </label>
 
-            <input className="input" type="text"  name="query"
-                    placeholder="i.e Jurassic Park"
-                    value={query} onChange={(e) => setQuery(e.target.value)}/>
-            <button className="button" type="submit"> Search </button>
-        </form>
-    )
+                <input className="input" type="text" name="query"
+                       placeholder="i.e Jurassic Park"
+                       value={query} onChange={(e) => setQuery(e.target.value)}/>
+                <button className="button" type="submit"> Search</button>
+            </form>
+                <div className="card-list">
+                    {movies.filter(movie => movie.poster_path).map(movie => (
+                        <MovieCard movie={movie} key={movie.id} />
+                    ))}
+                </div>
+
+                </>
+        )
+    }
 }
