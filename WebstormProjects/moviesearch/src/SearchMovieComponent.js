@@ -16,9 +16,6 @@ export default function searchMovie() {
         e.preventDefault();
         console.log("submitting");
 
-        const searchMovies = async (e) => {
-            e.preventDefault();
-
             const url = 'https://api.themoviedb.org/3/search/movie?api_key=d11bdf4d11e25cd7375edacc7c44f744&language=en-US&query=${query}&page=1&include_adult=face';
             try {
                 const res = await fetch(url);
@@ -49,4 +46,3 @@ export default function searchMovie() {
                 </>
         )
     }
-}
